@@ -30,8 +30,10 @@ $(function () {
               console.log(data.return)
               if (data.return == true) {
                 // se tudo ir certo com email e senha é redirecionado
+                $("#btn-load").addClass("hidden");
+                $("#btn-correct").removeClass("hidden");
                 setTimeout(function () {
-                  $(location).attr('href', '../dashboard/index.php');
+                  $(location).attr('href', '../login/index.php');
                 }, 1400);
               } else if (data.return == false) {
                 $("#returnMenssage").val("");

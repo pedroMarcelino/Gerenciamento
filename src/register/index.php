@@ -35,7 +35,7 @@
 
         <div class="nb-4">
             <p><a href="#" class="text-indigo-600">Esqueceu sua senha?</a></p>
-            <p>Não tem uma conta? <a href="../register/index.php" class="text-indigo-600">Registre-se</a></p>
+            <p>já possui conta? <a href="../login/index.php" class="text-indigo-600">Faça login</a></p>
         </div>
     </div>
   </div>
