@@ -1,62 +1,68 @@
 $(function () {
 
-  $(".input").keyup(function() {
+  $(".input").keyup(function () {
     $(this).attr("class", "appearance-none block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-50 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none")
     $("#returnMenssage").text("");
     $("#returnMenssage").addClass("hidden");
   });
 
   $("#btn-register").on("click", function () {
-    if ( validaNome() ){
-      if( validaEmail() ){
-        if( validaSenha() ){
-            var data = {
-              "name": $("#input-name").val(),
-              "email": $("#input-email").val(),
-              "pass": $("#input-password").val(),
-            }
-            
-            $.ajax({
-              type: 'POST',
-              dataType: 'json',
-              url: 'function/register-user.php',
-              data: data,
-              beforeSend: function () {
-                  $("#btn-register").addClass(" hidden");
-                  $("#btn-load").removeClass("hidden");
-              },
-              success: function (data) {
-                  if (data.return == true) {
-                      // se tudo ir certo com email e senha é redirecionado
-                      $("#loading").attr("class", "btn btn-outline-defalt orange btn-block btn-round hidden");
-                      $("#finish").attr("class", "btn btn-outline-success btn-block btn-round");
-                      setTimeout(function () {
-                          $(location).attr('href', '../login/login.php');
-                      }, 1400);
-                  } else if (data.return == false) {
-                      swal("Oops!", "Ocorreu um erro, tente novamente!", "warning");
-                      $("#loading").attr("class", "btn btn-outline-defalt orange btn-block btn-round hidden");
-                      $("#submit").attr("class", "btn btn-outline-default blue-skye btn-block btn-round");
-                  } else if (data.return == "email_invalid") {
-                      swal("Oops!", "Usuário já cadastrado, tente outro email", "warning");
-                      $("#loading").attr("class", "btn btn-outline-defalt orange btn-block btn-round hidden");
-                      $("#submit").attr("class", "btn btn-outline-default blue-skye btn-block btn-round");
-                  }
-              },
-            });
+    if (validaNome()) {
+      if (validaEmail()) {
+        if (validaSenha()) {
+          var data = {
+            "name": $("#nome").val(),
+            "email": $("#email").val(),
+            "pass": $("#senha").val(),
+          }
+
+          $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: 'function/register-user.php',
+            data: data,
+            beforeSend: function () {
+              $("#btn-register").addClass(" hidden");
+              $("#btn-load").removeClass("hidden");
+            },
+            success: function (data) {
+              console.log(data)
+              console.log(data.return)
+              if (data.return == true) {
+                // se tudo ir certo com email e senha é redirecionado
+                setTimeout(function () {
+                  $(location).attr('href', '../dashboard/index.php');
+                }, 1400);
+              } else if (data.return == false) {
+                $("#returnMenssage").val("");
+                $("#returnMenssage").removeClass("hidden");
+                $("#returnMenssage").text("Ocorreu algum erro, tente novamente mais tarde!");
+
+                $("#btn-register").removeClass(" hidden");
+                $("#btn-load").addClass("hidden");
+              } else if (data.return == "email_invalid") {
+                $("#returnMenssage").val("");
+                $("#returnMenssage").removeClass("hidden");
+                $("#returnMenssage").text("Esse e-mail já existe no sistema!");
+
+                $("#btn-register").removeClass(" hidden");
+                $("#btn-load").addClass("hidden");
+              }
+            },
+          });
         }
       }
     }
 
   });
 
-  function validaNome (){
+  function validaNome() {
     nome = $('#nome').val()
     // console.log(nome)
 
-    if(nome == ""){
+    if (nome == "") {
       $("#nome").attr("class", "appearance-none block w-full px-4 py-3 leading-tight text-red-700 bg-gray-50 focus:bg-white border border-red-300 focus:border-red-500 rounded focus:outline-none");
-    }else{
+    } else {
       return true;
     }
   }
@@ -79,30 +85,31 @@ $(function () {
       return true;
     }
   }
-  
-  function validaSenha(){
+
+  function validaSenha() {
 
     senha = $("#senha").val();
     confSenha = $("#conf-senha").val()
 
-    if(senha == "" ){
+    if (senha == "") {
       $("#senha").attr("class", "appearance-none block w-full px-4 py-3 leading-tight text-red-700 bg-gray-50 focus:bg-white border border-red-300 focus:border-red-500 rounded focus:outline-none");
     }
-    if(confSenha == ""){
+    if (confSenha == "") {
       $("#conf-senha").attr("class", "appearance-none block w-full px-4 py-3 leading-tight text-red-700 bg-gray-50 focus:bg-white border border-red-300 focus:border-red-500 rounded focus:outline-none");
     }
 
-    if(senha == confSenha){
-      console.log("true");
+    if (senha == confSenha) {
+      // console.log("true");
       return true
-    }else{
+    } else {
       $("#senha").val("");
       $("#conf-senha").val("");
       $("#returnMenssage").removeClass("hidden")
       $("#returnMenssage").text("As senhas não correspondem!")
 
-      console.log("false");
-      return false }
+      // console.log("false");
+      return false
+    }
   }
 
 });
